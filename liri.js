@@ -1,11 +1,43 @@
 // add code to read and set any environment variables with the dotenv package
 require("dotenv").config();
 
-// Add the code required to import the `keys.js` file and store it in a variable
-var keys = require("./keys.js");
+// Include the axios npm package 
+var axios = require('axios')
 
-// access keys information
-var spotify = new Spotify(keys.spotify);
+// set the commands
+const nodeArg= process.argv
+var commandType = process.argv[2]
+
+var searchObject = ""
+
+nodeArg.splice(0, 3)
+var searchObject = nodeArg.join('+')
+
+// // capture everything after the command to be used as the search
+// var searchObjectArray = []
+// for (let i = 3; i < nodeArg.length; i++) {
+//   // We then "push" (add) each of these to our searchObject array
+//   searchObjectArray.push(nodeArg[i])
+// }
+// // join the elements of array into a single string
+// searchObject = searchObjectArray.join('+')
+
+// console.log(`searchObject is: ${searchObject}`)
+
+
+switch (commandType) {
+  case 'movie-this':
+    findMovie(searchObject)
+    break;
+  default:
+    console.log('Not a recognized command')
+}
+
+// // Add the code required to import the `keys.js` file and store it in a variable
+// var keys = require("./keys.js");
+
+// // access keys information
+// var spotify = new Spotify(keys.spotify);
 
 // --------------pseudocode-----------
 
@@ -27,11 +59,27 @@ var spotify = new Spotify(keys.spotify);
 
 // -------------actual code ---------------
 
-// Include the axios npm package 
-var axios = require('axios')
+// ----- OMDb -----
 
 // Then run a request with axios to the OMDB API with the movie specified
-axios.get('http://www.omdbapi.com/?t=game+of+thrones&y=&plot=short&apikey=trilogy')
-  .then(function (response) {
-    console.log(`The movie's rating is: ${response.data.imdbRating}`)
-  })
+
+function findMovie() {
+  // if the user does not enter a movie name
+  if (searchObject === "") {
+    console.log(`You did not enter a movie name.\nMight I suggest you watch Mr. Nobody if you haven't seen it already? It's available on Netflix! Here's more about the movie:`)
+    movieTitle = "Mr. Nobody"
+
+    OMDbMovieData()
+
+  } else {
+    movieTitle = searchObject
+    OMDbMovieData()
+  }
+}
+
+function OMDbMovieData() {
+  axios.get(`http://www.omdbapi.com/?t=${movieTitle}&apikey=d547b268`)
+    .then(function (response) {
+      console.log(`The movie ${response.data.Title} came out in ${response.data.Year}. It was produced in ${response.data.Country}. It is available in the following language(s): ${response.data.Language}. It has an IMDb Rating of ${response.data.imdbRating} and a ${response.data.Ratings[1].Source} Rating of ${response.data.Ratings[1].Value}. \nThe actors in the movie were: ${response.data.Actors}. The plot of the movie is: ${response.data.Plot}`)
+    })
+}
