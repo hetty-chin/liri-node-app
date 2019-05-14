@@ -14,6 +14,7 @@ I encapsulatad the call to OMDb into a function.
 I tested it to make sure the app will take in an entry and display the correct info. 
 Once I got that to work, I added an if function to show the details for Mr. Nobody if the user doesn't enter any movie name. 
 I noticed that if I had a title that has multiple words, it wouldn't query correctly because I had orignally made the search = argv[3] leaving out everything else. I considered using .shift but that only removed the first index, then I tried using splice but that didn't work. In the end, what worked was to run a for loop through the entire argv starting at index 3 and pushing that into an array, then joining the elements in the array with a .join using '+' for the separator. This changed my original conditions for searching Mr. Nobody from 'undefined' to "". UPDATE: turns out splice does work, I just did it wrong. My sister came over and made it work, so now I have 2 options avail with the for loop commented out. 
+
 ##Spotify
 I followed the instructions on getting a Spotify ID and Secret code.
 I added to the switch command spotify-this-song. 
