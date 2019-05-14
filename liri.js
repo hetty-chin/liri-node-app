@@ -2,14 +2,18 @@
 require("dotenv").config();
 
 // Include the axios npm package 
-var axios = require('axios')
+var axios = require('axios');
 
 // Add the code required to import the `keys.js` file and store it in a variable
 var keys = require("./keys.js");
 
 var Spotify = require('node-spotify-api');
+
 // access keys information
 var spotify = new Spotify(keys.spotify);
+
+// use moment npm 
+var moment = require('moment');
 
 // set the commands
 const nodeArg = process.argv
@@ -39,17 +43,15 @@ switch (commandType) {
   case 'spotify-this-song':
     findSong(searchObject)
     break;
+  case 'concert-this':
+    findConcert(searchObject)
+    break;
   default:
     console.log('Not a recognized command')
 }
 
-
-// LIRI will search Bands in Town for concerts with command `concert-this` and give 1) Name of venue 2) venue location 3) date of event in MM/DD/YYY
-
-
 // liri needs to take command `do-what-it-says`
 
-// use moment npm 
 
 
 // use fs node package to take text from inside random.txt and then use it to call one of LIRI's commands, it should run "I want it that way" but also test it out for movie-this and concert-this
@@ -103,4 +105,22 @@ function spotifyData() {
     }
 
   });
+}
+
+// ----- Bands in Town ----- 
+// LIRI will search Bands in Town for concerts with command `concert-this` and give 1) Name of venue 2) venue location 3) date of event in MM/DD/YYY
+
+function findConcert() {
+  bandName = searchObject
+  concertData()
+}
+// to follow the instructions the moment format would be 'L' but I liked how it looks with 'llll' instead
+function concertData() {
+  axios.get(`https://rest.bandsintown.com/artists/${bandName}/events?app_id=codingbootcamp`)
+    .then(function (response) {
+      var possibleConcerts = response.data
+      for (var i = 0; i < possibleConcerts.length; i++) {
+        console.log(`*****-----*****\n${bandName} is playing on ${moment(possibleConcerts[i].datetime).format('llll')} at ${possibleConcerts[i].venue.name}, located in ${possibleConcerts[i].venue.city}, ${possibleConcerts[i].venue.region} in the ${possibleConcerts[i].venue.country}.`)
+      }
+    })
 }
