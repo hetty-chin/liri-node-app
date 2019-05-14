@@ -104,7 +104,7 @@ function doIt() {
 // ----- OMDb -----
 // LIRI will search OMDb for movies with command `movie-this` and give 1) Title of the movie, 2) Year movie came out, 3) IMDB rating, 4) Rotten Tomatoes rating, 5) Country where movie was produced, 6) Language of movie, 7) Plot of the movie, 8) Actors of movie, 9) if no movie, program will output data for 'Mr. Nobody'
 
-function findMovie() {
+function findMovie(searchObject) {
   // if the user does not enter a movie name
   if (searchObject === "") {
     console.log(`*****-----*****\nYou did not enter a movie name.\n*****-----*****\nMight I suggest you watch Mr. Nobody if you haven't seen it already? It's available on Netflix!\n*****-----*****\nHere's more about the movie:`)
@@ -127,7 +127,7 @@ function OMDbMovieData() {
 // ----- Spotify -----
 // LIRI will search Spotify for songs with command `spotify-this-song` and give 1) Artist, 2) song's name, 3) preview link of the song, 4) album that the song is from 5) if no song is provided - default to "The Sign" by Ace of Base
 
-function findSong() {
+function findSong(searchObject) {
   if (searchObject === "") {
     console.log(`*****-----*****\nYou did not enter a song.\nHere are some songs for you:`)
     songSearch = "The Sign - Ace of Base"
@@ -155,12 +155,9 @@ function spotifyData() {
 // ----- Bands in Town ----- 
 // LIRI will search Bands in Town for concerts with command `concert-this` and give 1) Name of venue 2) venue location 3) date of event in MM/DD/YYY
 
-function findConcert() {
+function findConcert(searchObject) {
   bandName = searchObject
-  concertData()
-}
-// to follow the instructions the moment format would be 'L' but I liked how it looks with 'llll' instead
-function concertData() {
+  // to follow the instructions the moment format would be 'L' but I liked how it looks with 'llll' instead
   axios.get(`https://rest.bandsintown.com/artists/${bandName}/events?app_id=codingbootcamp`)
     .then(function (response) {
       var possibleConcerts = response.data
