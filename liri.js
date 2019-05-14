@@ -15,6 +15,9 @@ var spotify = new Spotify(keys.spotify);
 // use moment npm 
 var moment = require('moment');
 
+// use file system
+const fs = require('fs')
+
 // set the commands
 const nodeArg = process.argv
 var commandType = process.argv[2]
@@ -23,7 +26,7 @@ var searchObject = ""
 
 // capture everything after the command to be used as the search
 nodeArg.splice(0, 3)
-var searchObject = nodeArg.join('+')
+searchObject = nodeArg.join('+')
 
 // // ALTERNATIVE WAY: capture everything after the command to be used as the search
 // var searchObjectArray = []
@@ -46,15 +49,57 @@ switch (commandType) {
   case 'concert-this':
     findConcert(searchObject)
     break;
+  case 'do-what-it-says':
+    doIt(searchObject)
+    break;
   default:
     console.log('Not a recognized command')
 }
 
-// liri needs to take command `do-what-it-says`
+// ----- Do what it says
+// with the command `do-what-it-says`, LIRI will take text from inside random.txt and then use it to call one of LIRI's commands, it should run "I want it that way" but also test it out for movie-this 
+function doIt() {
+  fs.readFile('random.txt', 'utf8', function (error, data) {
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error)
+    }
 
+    //print the contents of data
+    console.log(`the data is: ${data}`)
 
+    // Then split it by commas (to make it more readable)
+    var dataArr = data.split(',')
+    var doItCommand = dataArr[0];
+    var doItSearchObject = dataArr[1];
 
-// use fs node package to take text from inside random.txt and then use it to call one of LIRI's commands, it should run "I want it that way" but also test it out for movie-this and concert-this
+    // re-display the content as an array for later use.
+    console.log(`the data array is: ${dataArr}: 0:${dataArr[0]} and 1:${dataArr[1]} `)
+    console.log(`the doItSearchObject is: ${doItSearchObject}`)
+
+    if (doItCommand === 'movie-this') {
+      findMovie(doItSearchObject)
+    } if (doItCommand === 'spotify-this-song') {
+      findSong(doItSearchObject)
+    } if (doItCommand === 'concert-this') {
+      findConcert(doItSearchObject)
+    }
+
+    // switch (doItCommand) {
+    //   case 'movie-this':
+    //     findMovie(searchObject)
+    //     break;
+    //   case 'spotify-this-song':
+    //     spotifyData(songSearch)
+    //     break;
+    //   case 'concert-this':
+    //     findConcert(searchObject)
+    //     break;
+    //   default:
+    //     console.log('Not a recognized command')
+    // }
+  })
+}
 
 // ----- OMDb -----
 // LIRI will search OMDb for movies with command `movie-this` and give 1) Title of the movie, 2) Year movie came out, 3) IMDB rating, 4) Rotten Tomatoes rating, 5) Country where movie was produced, 6) Language of movie, 7) Plot of the movie, 8) Actors of movie, 9) if no movie, program will output data for 'Mr. Nobody'
