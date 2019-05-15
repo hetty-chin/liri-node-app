@@ -71,7 +71,7 @@ function doIt() {
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(',')
     var doItCommand = dataArr[0];
-    var doItSearchObject = dataArr[1];
+    var doItSearchObject = dataArr[1].trim();
 
     // re-display the content as an array for later use.
     console.log(`the data array is: ${dataArr}: 0:${dataArr[0]} and 1:${dataArr[1]} `)
@@ -163,7 +163,10 @@ function findConcert(searchObject) {
   axios.get(`https://rest.bandsintown.com/artists/${bandName}/events?app_id=codingbootcamp`)
     .then(function (response) {
       var possibleConcerts = response.data
-      console.log('LOG2', possibleConcerts);
+      for (res in response) {
+        console.log(res)
+      }
+      console.log('response:', response.request);
       
       for (var i = 0; i < possibleConcerts.length; i++) {
         console.log(`*****-----*****\n${bandName} is playing on ${moment(possibleConcerts[i].datetime).format('llll')} at ${possibleConcerts[i].venue.name}, located in ${possibleConcerts[i].venue.city}, ${possibleConcerts[i].venue.region} in the ${possibleConcerts[i].venue.country}.`)
