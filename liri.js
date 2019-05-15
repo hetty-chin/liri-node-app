@@ -156,11 +156,15 @@ function spotifyData() {
 // LIRI will search Bands in Town for concerts with command `concert-this` and give 1) Name of venue 2) venue location 3) date of event in MM/DD/YYY
 
 function findConcert(searchObject) {
+  console.log('LOG so', searchObject);
+  
   bandName = searchObject
   // to follow the instructions the moment format would be 'L' but I liked how it looks with 'llll' instead
   axios.get(`https://rest.bandsintown.com/artists/${bandName}/events?app_id=codingbootcamp`)
     .then(function (response) {
       var possibleConcerts = response.data
+      console.log('LOG2', possibleConcerts);
+      
       for (var i = 0; i < possibleConcerts.length; i++) {
         console.log(`*****-----*****\n${bandName} is playing on ${moment(possibleConcerts[i].datetime).format('llll')} at ${possibleConcerts[i].venue.name}, located in ${possibleConcerts[i].venue.city}, ${possibleConcerts[i].venue.region} in the ${possibleConcerts[i].venue.country}.`)
       }
