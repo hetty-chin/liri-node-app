@@ -65,17 +65,10 @@ function doIt() {
       return console.log(error)
     }
 
-    //print the contents of data
-    console.log(`the data is: ${data}`)
-
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(',')
     var doItCommand = dataArr[0];
     var doItSearchObject = dataArr[1].trim();
-
-    // re-display the content as an array for later use.
-    console.log(`the data array is: ${dataArr}: 0:${dataArr[0]} and 1:${dataArr[1]} `)
-    console.log(`the doItSearchObject is: ${doItSearchObject}`)
 
     if (doItCommand === 'movie-this') {
       findMovie(doItSearchObject)
@@ -157,7 +150,7 @@ function spotifyData() {
 
 function findConcert(searchObject) {
   console.log('LOG so', searchObject);
-  
+
   bandName = searchObject
   // to follow the instructions the moment format would be 'L' but I liked how it looks with 'llll' instead
   axios.get(`https://rest.bandsintown.com/artists/${bandName}/events?app_id=codingbootcamp`)
@@ -167,7 +160,7 @@ function findConcert(searchObject) {
         console.log(res)
       }
       console.log('response:', response.request);
-      
+
       for (var i = 0; i < possibleConcerts.length; i++) {
         console.log(`*****-----*****\n${bandName} is playing on ${moment(possibleConcerts[i].datetime).format('llll')} at ${possibleConcerts[i].venue.name}, located in ${possibleConcerts[i].venue.city}, ${possibleConcerts[i].venue.region} in the ${possibleConcerts[i].venue.country}.`)
       }
